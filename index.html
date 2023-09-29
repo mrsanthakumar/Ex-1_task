@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Strength Checker</title>
+    <style>
+        .strong {
+            color: green;
+        }
+
+        .moderate {
+            color: yellowgreen;
+        }
+
+        .weak {
+            color: red;
+        }
+        .word{
+            font-family:'Courier New', Courier, monospace; 
+        }
+        h2{
+            font-weight: bold;
+            font-family:'Courier New', Courier, monospace;
+            text-align: center;
+        }
+        .whole{
+            border: 1px solid;
+            align-items: center;
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            margin-top: 15%;
+        }
+        .center{
+            margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+        }
+    </style>
+    <script>
+        function checkPasswordStrength(password) {
+            var lengthCriteria = password.length >= 8;
+            var uppercaseCriteria = /[A-Z]/.test(password);
+            var lowercaseCriteria = /[a-z]/.test(password);
+            var numberCriteria = /[0-9]/.test(password);
+            var specialCharCriteria = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
+
+            var strength = 0;
+            if (lengthCriteria) strength++;
+            if (uppercaseCriteria) strength++;
+            if (lowercaseCriteria) strength++;
+            if (numberCriteria) strength++;
+            if (specialCharCriteria) strength++;
+
+            if (strength === 5) {
+                return { message: "Strong password", class: "strong" };
+            } else if (strength >= 3) {
+                return { message: "Moderate password", class: "moderate" };
+            } else {
+                return { message: "Weak password", class: "weak" };
+            }
+        }
+
+        function displayPasswordStrength() {
+            var passwordInput = document.getElementById("password");
+            var passwordStrengthMessage = document.getElementById("password-strength-message");
+            var password = passwordInput.value;
+            var strengthInfo = checkPasswordStrength(password);
+            passwordStrengthMessage.textContent = strengthInfo.message;
+            passwordStrengthMessage.className = strengthInfo.class;
+        }
+    </script>
+</head>
+<body>
+   <div class="whole">
+    <h2>Password Strength Checker</h2>
+   <table class="center" >
+    <tr>
+        <td> <label for="password"><div class="word">Password:</div></label> </td>
+        <td><input type="password" id="password" onkeyup="displayPasswordStrength()"></td>
+    </tr>
+   </table>
+    <p id="password-strength-message" class="center"></p>
+   </div>
+</body>
+</html>
